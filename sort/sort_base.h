@@ -9,28 +9,33 @@ using namespace std;
 template<typename T>
 class SortBase {
 public:
-    static void Sort(vector<T> comparable) {}
+    // 子类实现具体的排序算法，所有元素放在 vector 中
+    static void Sort(vector<T> &elements) {}
 
-    static bool IsSorted(const vector<T> &comparable) {
-        for (int i = 1; i < comparable.size(); i++) {
-            if (Less(comparable[i], comparable[i - 1])) return false;
+    // 检查所有元素是否按从小到大排列好了
+    static bool IsSorted(const vector<T> &elements) {
+        for (int i = 1; i < elements.size(); i++) {
+            if (Less(elements[i], elements[i - 1])) return false;
         }
+        return true;
     }
 
-    static void Show(const vector<T> comparable) {
-        for (auto &mem:comparable) {
-            cout << mem << " ";
+    // 在一行中输出所有的元素，元素类型必须实现了 operator<<
+    static void Show(const vector<T> &elements) {
+        for (auto &element:elements) {
+            cout << element << " ";
         }
         cout << endl;
     }
 
-private:
+protected:
     static bool Less(T a, T b) { return a < b; }
 
-    static void Exch(vector<T> &comparable, unsigned int i, unsigned int j) {
-        T tmp = comparable[i];
-        comparable[i] = comparable[j];
-        comparable[j] = tmp;
+    // 交换 index i 和 j 处的元素
+    static void Exch(vector<T> &elements, unsigned int i, unsigned int j) {
+        T tmp = elements[i];
+        elements[i] = elements[j];
+        elements[j] = tmp;
     }
 };
 
