@@ -15,9 +15,9 @@ public:
         for (unsigned int i = 0; i < size; i++) {
             min = i;
             for (unsigned int j = i + 1; j < size; j++) {
-                if (Less(elements[j], elements[min])) min = j;
+                if (SortBase<T>::Less(elements[j], elements[min])) min = j;
             }
-            Exch(elements, i, min);
+            SortBase<T>::Exch(elements, i, min);
         }
     }
 };

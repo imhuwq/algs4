@@ -14,8 +14,8 @@ public:
         unsigned exchanges = 0;
         // 首先进行一个粗略的排序，确保最小的元素在最左
         for (unsigned int i = size - 1; i > 0; i--) {
-            if (Less(elements[i], elements[i - 1])) {
-                Exch(elements, i, i - 1);
+            if (SortBase<T>::Less(elements[i], elements[i - 1])) {
+                SortBase<T>::Exch(elements, i, i - 1);
                 exchanges++;
             }
         }
@@ -30,7 +30,7 @@ public:
             unsigned int j = i;
 
             // 只要选定的元素比 j 左边的元素小...
-            while (Less(element, elements[j - 1])) {  // 最小的已经在最左，所以 while 循环一定会在 j = 1 时跳出
+            while (SortBase<T>::Less(element, elements[j - 1])) {  // 最小的已经在最左，所以 while 循环一定会在 j = 1 时跳出
                 // 就把小的元素右移一位...
                 elements[j] = elements[j - 1];
                 // 再把 j 往左移动一位;

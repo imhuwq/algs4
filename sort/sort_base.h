@@ -15,7 +15,7 @@ public:
     // 检查所有元素是否按从小到大排列好了
     static bool IsSorted(const vector<T> &elements) {
         for (int i = 1; i < elements.size(); i++) {
-            if (Less(elements[i], elements[i - 1])) return false;
+            if (SortBase::Less(elements[i], elements[i - 1])) return false;
         }
         return true;
     }

@@ -15,8 +15,8 @@ public:
 
         // 首先进行一个粗略的排序，确保最小的元素在最左
         for (unsigned int i = size - 1; i > 0; i--) {
-            if (Less(elements[i], elements[i - 1])) {
-                Exch(elements, i, i - 1);
+            if (SortBase<T>::Less(elements[i], elements[i - 1])) {
+                SortBase<T>::Exch(elements, i, i - 1);
                 exchanges++;
             }
         }
@@ -32,7 +32,7 @@ public:
             for (unsigned int i = k; i < size; i++) {
                 T element = elements[i];
                 unsigned int j = i;
-                while (Less(element, elements[j - h])) {
+                while (SortBase<T>::Less(element, elements[j - h])) {
                     elements[j] = elements[j - h];
                     j -= h;
                 }
