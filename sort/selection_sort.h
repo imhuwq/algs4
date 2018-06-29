@@ -9,7 +9,7 @@
 template<typename T>
 class SelectionSort : public SortBase<T> {
 public:
-    static void Sort(vector<T> &elements) {
+    void Sort(vector<T> &elements) {
         unsigned int min;
         unsigned int size = elements.size();
         for (unsigned int i = 0; i < size; i++) {

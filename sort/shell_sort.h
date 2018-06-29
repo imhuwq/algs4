@@ -9,7 +9,7 @@
 template<typename T>
 class ShellSort : public SortBase<T> {
 public:
-    void static Sort(vector<T> &elements) {
+    void Sort(vector<T> &elements) {
         unsigned int size = elements.size();
         unsigned int exchanges = 0;
 

@@ -9,7 +9,7 @@
 template<typename T>
 class InsertionSort : public SortBase<T> {
 public:
-    static void Sort(vector<T> &elements) {
+    void Sort(vector<T> &elements) {
         unsigned int size = elements.size();
         unsigned exchanges = 0;
         // 首先进行一个粗略的排序，确保最小的元素在最左

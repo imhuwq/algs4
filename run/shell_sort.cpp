@@ -5,8 +5,9 @@ using namespace std;
 
 int main(const int argc, const char **argv) {
     vector<int> nums = {5, 1, 3, 7, 8, 6};
-    ShellSort<int>::Show(nums);
-    ShellSort<int>::Sort(nums);
-    cout << (ShellSort<int>::IsSorted(nums) ? "Sorted" : "Unsorted") << endl;
-    ShellSort<int>::Show(nums);
+    ShellSort<int> sort;
+    sort.Show(nums);
+    sort.Sort(nums);
+    cout << (sort.IsSorted(nums) ? "Sorted" : "Unsorted") << endl;
+    sort.Show(nums);
 }
