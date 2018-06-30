@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <iostream>
+#include <iterator>
+#include <algorithm>
 
 using namespace std;
 
@@ -29,13 +31,13 @@ public:
     }
 
 protected:
-    static bool Less(T a, T b) { return a < b; }
+    static bool Less(const T &a, const T &b) { return a < b; }
+
+    static bool More(const T &a, const T &b) { return a > b; }
 
     // 交换 index i 和 j 处的元素
     static void Exch(vector<T> &elements, unsigned int i, unsigned int j) {
-        T tmp = elements[i];
-        elements[i] = elements[j];
-        elements[j] = tmp;
+        swap(elements[i], elements[j]);
     }
 };
 
