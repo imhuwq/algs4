@@ -3,9 +3,9 @@
 
 #include "sort_base.h"
 
-// Ï£¶ûÅÅÐòÊÇ²åÈëÅÅÐòµÄÒ»¸ö±äÖÖ£¬ËüÀûÓÃÁË²åÈëÅÅÐò¶ÔÊäÈë×´Ì¬Ãô¸ÐµÄÌØµã
-// Ï£¶ûÅÅÐòµÄË¼Â·ÊÇ£¬Ò»·½ÃæÔÚ¼Ó´óµÄ¼¯ºÏÖÐÊ¹ÓÃ¸ü³¤µÄÒÆ¶¯²½³¤À´¿ìËÙÒÆ¶¯ÔªËØ
-// ÁíÒ»·½ÃæÐÎ³É h-th ÓÐÐòÐòÁÐºó,ÀûÓÃ²åÈëÅÅÐòÔÚ´¦Àí²¿·ÖÓÐÐòµÄ¼¯ºÏÊ±¸ü¼Ó¸ßÐ§µÄÌØµã
+// å¸Œå°”æŽ’åºæ˜¯æ’å…¥æŽ’åºçš„ä¸€ä¸ªå˜ç§ï¼Œå®ƒåˆ©ç”¨äº†æ’å…¥æŽ’åºå¯¹è¾“å…¥çŠ¶æ€æ•æ„Ÿçš„ç‰¹ç‚¹
+// å¸Œå°”æŽ’åºçš„æ€è·¯æ˜¯ï¼Œä¸€æ–¹é¢åœ¨åŠ å¤§çš„é›†åˆä¸­ä½¿ç”¨æ›´é•¿çš„ç§»åŠ¨æ­¥é•¿æ¥å¿«é€Ÿç§»åŠ¨å…ƒç´ 
+// å¦ä¸€æ–¹é¢å½¢æˆ h-th æœ‰åºåºåˆ—åŽ,åˆ©ç”¨æ’å…¥æŽ’åºåœ¨å¤„ç†éƒ¨åˆ†æœ‰åºçš„é›†åˆæ—¶æ›´åŠ é«˜æ•ˆçš„ç‰¹ç‚¹
 template<typename T>
 class ShellSort : public SortBase<T> {
 public:
@@ -13,7 +13,7 @@ public:
         unsigned int size = elements.size();
         unsigned int exchanges = 0;
 
-        // Ê×ÏÈ½øÐÐÒ»¸ö´ÖÂÔµÄÅÅÐò£¬È·±£×îÐ¡µÄÔªËØÔÚ×î×ó
+        // é¦–å…ˆè¿›è¡Œä¸€ä¸ªç²—ç•¥çš„æŽ’åºï¼Œç¡®ä¿æœ€å°çš„å…ƒç´ åœ¨æœ€å·¦
         for (unsigned int i = size - 1; i > 0; i--) {
             if (SortBase<T>::Less(elements[i], elements[i - 1])) {
                 SortBase<T>::Exch(elements, i, i - 1);
@@ -23,8 +23,8 @@ public:
 
         if (exchanges == 0) return;
 
-        // ½ÓÏÂÀ´µÄË¼Â·ºÍ²åÈëÅÅÐòÈÔÈ»Ò»ÖÂ£¬Ö»²»¹ýÊ¹ÓÃÁËÒ»¸öµÝ¼õµÄ h ×÷Îª±È½Ï/ÒÆ¶¯µÄ²½³¤
-        // µ± h ¼õÉÙµ½ 1 Ê±£¬¾ÍºÍÆÕÍ¨µÄ²åÈëÅÅÐòÍêÈ«Ò»ÑùÁË£¬µ«´ËÊ±±»´¦ÀíµÄÒÑ¾­ÊÇÒ»¸öÖÁÉÙ 4-th ÓÐÐòµÄ¼¯ºÏ
+        // æŽ¥ä¸‹æ¥çš„æ€è·¯å’Œæ’å…¥æŽ’åºä»ç„¶ä¸€è‡´ï¼Œåªä¸è¿‡ä½¿ç”¨äº†ä¸€ä¸ªé€’å‡çš„ h ä½œä¸ºæ¯”è¾ƒ/ç§»åŠ¨çš„æ­¥é•¿
+        // å½“ h å‡å°‘åˆ° 1 æ—¶ï¼Œå°±å’Œæ™®é€šçš„æ’å…¥æŽ’åºå®Œå…¨ä¸€æ ·äº†ï¼Œä½†æ­¤æ—¶è¢«å¤„ç†çš„å·²ç»æ˜¯ä¸€ä¸ªè‡³å°‘ 4-th æœ‰åºçš„é›†åˆ
         unsigned int h = 1;
         while (h < size / 3) h = h * 3 + 1;
         while (h >= 1) {
