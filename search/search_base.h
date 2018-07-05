@@ -9,43 +9,43 @@ template<typename K, typename V>
 class SearchBase {
 
 public:
-	virtual void Put(const K &key, const V val) = 0£»
+    virtual void Put(const K &key, const V val) = 0;
 
-    virtual V Get(const K &key) = 0£»
+    virtual V Get(const K &key) = 0;
 
-	void Delete(const K &key) { Put(key, nullptr); }
+    virtual void Delete(const K &key) = 0;
 
     bool Contains(const K &key) { return Get(key) == nullptr; }
 
-	bool IsEmpty() { return size() == 0; }
+    bool IsEmpty() { return Size() == 0; }
 
-	virtual int Size() = 0;
+    virtual int Size() = 0;
 
-	virtual int Size(const K& lo, const K& hi) {
-		if (hi < lo) return 0;
-		else if (Contains(hi)) return Rank(hi) - Rank(lo) + 1;
-		else return Rank(hi) - Rank(lo);
-	}
+    virtual int Size(const K &lo, const K &hi) {
+        if (hi < lo) return 0;
+        else if (Contains(hi)) return Rank(hi) - Rank(lo) + 1;
+        else return Rank(hi) - Rank(lo);
+    }
 
-	virtual K Min() = 0;
+    virtual K Min() = 0;
 
-	void DeleteMin() { Delete(Min(); }
+    void DeleteMin() { Delete(Min()); }
 
-	virtual K Max() = 0;
+    virtual K Max() = 0;
 
-	void DeleteMax() { Delete(Max()); }
+    void DeleteMax() { Delete(Max()); }
 
-	virtual K Floor(const K& key) = 0;
+    virtual K Floor(const K &key) = 0;
 
-	virtual K Ceiling(const K& key) = 0;
+    virtual K Ceiling(const K &key) = 0;
 
-	virtual int Rank(const K& key) = 0;
+    virtual int Rank(const K &key) = 0;
 
-	virtual K Select(int rank) = 0;
+    virtual K Select(int rank) = 0;
 
-	virtual vector<K> Keys(const K& lo, const K& hi) = 0;
+    virtual vector<K> Keys(const K &lo, const K &hi) = 0;
 
-	vector<K> Keys() { return Keys(Min(), Max()); }
+    vector<K> Keys() { return Keys(Min(), Max()); }
 };
 
 #endif //ALGS4_SEARCH_SEARCH_BASE_H
