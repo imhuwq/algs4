@@ -6,7 +6,7 @@ using namespace std;
 
 int main(const int argc, const char **argv) {
 	string filePath;
-	cout << "ÇëÊäÈëÊý¾ÝÎÄ¼þÂ·¾¶: ";
+	cout << "è¯·è¾“å…¥æ•°æ®æ–‡ä»¶è·¯å¾„: ";
 	cin >> filePath;
 	cout << endl;
 
