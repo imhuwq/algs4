@@ -39,6 +39,7 @@ private:
     void Sort(vector<T> &elements, unsigned int lo, unsigned int hi) {
         if (hi <= lo) return;
         unsigned int divide = Partition(elements, lo, hi);
+        if (divide == 0) return;
         Sort(elements, lo, divide - 1);
         Sort(elements, divide + 1, hi);
     }

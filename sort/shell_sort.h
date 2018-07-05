@@ -32,7 +32,7 @@ public:
             for (unsigned int i = k; i < size; i++) {
                 T element = elements[i];
                 unsigned int j = i;
-                while (SortBase<T>::Less(element, elements[j - h])) {
+                while (j > h and SortBase<T>::Less(element, elements[j - h])) {
                     elements[j] = elements[j - h];
                     j -= h;
                 }

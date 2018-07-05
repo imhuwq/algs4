@@ -15,10 +15,7 @@ vector<Num> ReadNumbers(const string &filePath) {
     Num number;
     vector<Num> numbers;
 
-    if (stream) cout << filePath << endl;
-
     while (stream >> number) {
-        cout << number << endl;
         numbers.push_back(number);
     }
 
