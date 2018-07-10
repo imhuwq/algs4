@@ -22,11 +22,17 @@ int main(const int *argc, const char **argv) {
     string maxCounter = " ";
     bst.Put(maxCounter, 0);
     for (auto &word:counter) {
-        cout << word << ": " << bst.Get(word) << endl;
         if (bst.Get(word) > bst.Get(maxCounter)) {
             maxCounter = word;
         }
     }
-    cout << "===" << endl;
-    cout << maxCounter << ": " << bst.Get(maxCounter) << endl;
+
+    string maxKey = bst.Max()->key;
+    cout << "Max key: " << maxKey << endl;
+
+    while (bst.Size()) {
+        string minKey = bst.Min()->key;
+        cout << minKey << " " << bst.Get(minKey) << endl;
+        bst.Delete(minKey);
+    }
 }
