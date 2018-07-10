@@ -1,5 +1,6 @@
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../common")
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../sort")
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/../search")
 
 file(GLOB_RECURSE RUN_CASES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 foreach (RUN_CASE ${RUN_CASES})
