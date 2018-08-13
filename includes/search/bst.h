@@ -7,6 +7,8 @@
 
 using namespace std;
 
+// 二叉树的特点是树由节点构成，每个节点包含指向左右两个子节点的指针，左边的节点比自己小，右边的节点比自己大(不支持相同的节点)。
+// 二叉树使用 O(lgN) 次查找，最坏情况下要使用 N 次查找
 template<typename K, typename V>
 class BST {
 private:
