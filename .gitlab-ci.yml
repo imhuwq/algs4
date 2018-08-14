@@ -1,0 +1,21 @@
+stages:
+ - add_remote
+ - push_remote
+
+job add_remote_github:
+  stage: add_remote
+  tags:
+    - github-pusher
+  script:
+    - git remote add github git@github.com:imhuwq/$CI_PROJECT_NAME.git
+  allow_failure: true
+
+job push_github:
+ stage: push_remote
+ tags:
+  - github-pusher
+ script:
+  - git checkout $CI_COMMIT_REF_NAME
+  - git pull origin $CI_COMMIT_REF_NAME
+  - git push github
+  - git push github --tags
