@@ -36,6 +36,8 @@ class RBT {
 
     FRIEND_TEST(RBT_TEST, TEST_PUT_BOTTOM_3_NODE_RIGHT);
 
+    FRIEND_TEST(RBT_TEST, TEST_TREE_IS_BALANCED);
+
 private:
     struct Node_;
     typedef shared_ptr<Node_> Node;
@@ -83,6 +85,25 @@ private:
 
     // this method is only for test purpose
     Node GetRoot() { return root; }
+
+    // this method is only for test purpose
+    int CheckTree(Node node, COLOR parent_color, int black_link) {
+        if (node == nullptr) return black_link;
+        if (parent_color == RED && node->IsRed()) return -1;
+        if (!node->IsRed()) black_link += 1;
+        int left_black_link = CheckTree(node->left, node->color, black_link);
+        int right_black_link = CheckTree(node->right, node->color, black_link);
+        if (left_black_link == right_black_link) return left_black_link;
+        else return -1;
+    }
+
+    // this method is only for test purpose
+    bool CheckTree() {
+        if (root == nullptr) return true;
+        if (root->IsRed()) return false;
+        int black_link = 0;
+        return CheckTree(root->left, root->color, black_link) == CheckTree(root->right, root->color, black_link) >= 0;
+    }
 
     Node FlipColor(Node node) {
         assert(!node->IsRed());

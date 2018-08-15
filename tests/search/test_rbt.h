@@ -173,4 +173,14 @@ TEST(RBT_TEST, TEST_PUT_BOTTOM_3_NODE_RIGHT) {
     EXPECT_FALSE(rbt.GetNode(10)->IsRed());
 }
 
+TEST(RBT_TEST, TEST_TREE_IS_BALANCED) {
+    RBT<int, int> rbt;
+    rbt.Put(0, 0);
+    rbt.Put(-10, -10);
+    rbt.Put(10, 10);
+    rbt.Put(-20, -20);
+    rbt.Put(-5, -5);
+    EXPECT_TRUE(rbt.CheckTree());
+}
+
 #endif //ALGS4_TEST_RBT_H
