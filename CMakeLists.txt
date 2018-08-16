@@ -18,7 +18,9 @@ include_directories(${PRJ_INCLUDE_DIRS})
 
 # libraries
 
-
 add_executable(run_test test.cpp ${PRJ_SOURCES})
 target_link_libraries(run_test ${PRJ_LIBRARIES} gtest_main)
 add_test(NAME run_test COMMAND run_test)
+
+add_executable(run_debug debug.cpp ${PRJ_SOURCES})
+target_link_libraries(run_debug ${PRJ_LIBRARIES} gtest_main)

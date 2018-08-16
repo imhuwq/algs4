@@ -5,8 +5,11 @@
 #include <memory>
 #include <error.h>
 #include <gtest/gtest_prod.h>
+#include <cassert>
 
 using namespace std;
+
+#define DEBUG(msg) std::cerr << (msg) << endl
 
 typedef bool COLOR;
 #define RED true
@@ -38,6 +41,8 @@ class RBT {
 
     FRIEND_TEST(RBT_TEST, TEST_TREE_IS_BALANCED);
 
+    FRIEND_TEST(RBT_TEST, TEST_DELETE);
+
 private:
     struct Node_;
     typedef shared_ptr<Node_> Node;
@@ -66,7 +71,7 @@ private:
     }
 
     V Get(Node node, const K &key) {
-        if (node == nullptr) throw runtime_error("Get value from empty node");
+        if (node == nullptr) throw runtime_error("Get value by a unset key");
         if (key == node->k) return node->v;
         else if (key < node->k) return Get(node->left, key);
         return Get(node->right, key);
@@ -87,14 +92,21 @@ private:
     Node GetRoot() { return root; }
 
     // this method is only for test purpose
+    int ReCountSize(Node node) {
+        if (node == nullptr) return 0;
+        return ReCountSize(node->left) + ReCountSize(node->right) + 1;
+    }
+
+    // this method is only for test purpose
     int CheckTree(Node node, COLOR parent_color, int black_link) {
         if (node == nullptr) return black_link;
         if (parent_color == RED && node->IsRed()) return -1;
         if (!node->IsRed()) black_link += 1;
         int left_black_link = CheckTree(node->left, node->color, black_link);
         int right_black_link = CheckTree(node->right, node->color, black_link);
-        if (left_black_link == right_black_link) return left_black_link;
-        else return -1;
+        if (left_black_link != right_black_link) return -1;
+        else if (ReCountSize(node) != node->size) return -1;
+        return left_black_link;
     }
 
     // this method is only for test purpose
@@ -106,13 +118,9 @@ private:
     }
 
     Node FlipColor(Node node) {
-        assert(!node->IsRed());
-        assert(node->left->IsRed());
-        assert(node->right->IsRed());
-
-        node->left->color = BLACK;
-        node->right->color = BLACK;
-        node->color = RED;
+        node->left->color = !node->left->color;
+        node->right->color = !node->right->color;
+        node->color = !node->color;
 
         return node;
     }
@@ -155,6 +163,7 @@ private:
         if (node->right->IsRed() && !node->left->IsRed()) node = RotateLeft(node);
         if (node->left->IsRed() && node->left->left->IsRed()) node = RotateRight(node);
         if (node->left->IsRed() && node->right->IsRed()) node = FlipColor(node);
+        node->size = GetSize(node->left) + GetSize(node->right) + 1;
         return node;
     }
 
@@ -164,7 +173,71 @@ private:
         else if (key < node->k) node->left = Put(node->left, key, value);
         else if (key > node->k) node->right = Put(node->right, key, value);
         node = BalanceNode(node);
-        node->size = GetSize(node->left) + GetSize(node->right) + 1;
+        return node;
+    }
+
+    Node Min(Node node) {
+        assert(node != nullptr);
+        if (node->left != nullptr) return Min(node->left);
+        return node;
+    }
+
+    Node MoveRedLeft(Node node) {
+        assert(node->IsRed() && !node->left->IsRed() && !node->left->left->IsRed());
+        node = FlipColor(node);
+        if (node->right->left->IsRed()) {
+            node->right = RotateRight(node->right);
+            node = RotateLeft(node->left);
+            node = FlipColor(node);
+        }
+        return node;
+    }
+
+    Node MoveRedRight(Node node) {
+        assert(node->IsRed() && !node->right->IsRed() && !node->right->left->IsRed());
+        node = FlipColor(node);
+        if (node->left->left->IsRed()) {
+            node = RotateRight(node);
+            node = FlipColor(node);
+        }
+        return node;
+
+    }
+
+    Node DeleteMin(Node node) {
+        assert(node != nullptr);
+        assert(node->IsRed() || node->left->IsRed());
+        if (node->left == nullptr) return nullptr;
+        if (!node->left->IsRed() && !node->left->left->IsRed()) node = MoveRedLeft(node);
+        node->left = DeleteMin(node->left);
+        node = BalanceNode(node);
+        return node;
+    }
+
+    Node Delete(Node node, const K &key) {
+        if (node == nullptr) throw runtime_error("Delete value by a unset key");
+
+        if (key < node->k) {
+            if (!node->left->IsRed() && !node->left->left->IsRed()) node = MoveRedLeft(node);
+            node->left = Delete(node->left, key);
+        } else {
+            if (node->left->IsRed()) node = RotateRight(node);
+
+            if (key == node->k && node->right == nullptr) return nullptr;
+
+            if (!node->right->IsRed() && !node->right->left->IsRed()) node = MoveRedRight(node);
+
+            if (key == node->k) {
+                Node min_node = Min(node->right);
+                node->k = min_node->k;
+                node->v = min_node->v;
+                node->right = DeleteMin(node->right);
+            } else {
+                node->right = Delete(node->right, key);
+            }
+        }
+
+        node = BalanceNode(node);
         return node;
     }
 
@@ -178,6 +251,13 @@ public:
     void Put(const K &key, const V &value) {
         root = Put(root, key, value);
         root->color = false;
+    }
+
+    void Delete(const K &key) {
+        if (root == nullptr) throw runtime_error("Delete from empty tree");
+        if (!root->left->IsRed() && !root->right->IsRed()) root->color = RED;
+        root = Delete(root, key);
+        if (root != nullptr) root->color = BLACK;
     }
 };
 

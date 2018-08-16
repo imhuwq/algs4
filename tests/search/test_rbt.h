@@ -183,4 +183,18 @@ TEST(RBT_TEST, TEST_TREE_IS_BALANCED) {
     EXPECT_TRUE(rbt.CheckTree());
 }
 
+TEST(RBT_TEST, TEST_DELETE) {
+    RBT<int, int> rbt;
+    rbt.Put(0, 0);
+    rbt.Put(-10, -10);
+    rbt.Put(10, 10);
+    rbt.Put(-20, -20);
+    rbt.Put(-5, -5);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    rbt.Delete(0);
+    EXPECT_EQ(rbt.GetSize(), 4);
+    EXPECT_TRUE(rbt.CheckTree());
+}
+
 #endif //ALGS4_TEST_RBT_H
