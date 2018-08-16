@@ -195,6 +195,24 @@ TEST(RBT_TEST, TEST_DELETE) {
     rbt.Delete(0);
     EXPECT_EQ(rbt.GetSize(), 4);
     EXPECT_TRUE(rbt.CheckTree());
+
+    rbt.Delete(-10);
+    EXPECT_EQ(rbt.GetSize(), 3);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    rbt.Delete(-20);
+    EXPECT_EQ(rbt.GetSize(), 2);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    rbt.Delete(-5);
+    EXPECT_EQ(rbt.GetSize(), 1);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    rbt.Delete(10);
+    EXPECT_EQ(rbt.GetSize(), 0);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    EXPECT_THROW(rbt.Delete(1), runtime_error);
 }
 
 #endif //ALGS4_TEST_RBT_H

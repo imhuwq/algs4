@@ -109,13 +109,6 @@ private:
         return left_black_link;
     }
 
-    // this method is only for test purpose
-    bool CheckTree() {
-        if (root == nullptr) return true;
-        if (root->IsRed()) return false;
-        int black_link = 0;
-        return CheckTree(root->left, root->color, black_link) == CheckTree(root->right, root->color, black_link) >= 0;
-    }
 
     Node FlipColor(Node node) {
         node->left->color = !node->left->color;
@@ -161,7 +154,7 @@ private:
     Node BalanceNode(Node node) {
         if (node == nullptr) return node;
         if (node->right->IsRed() && !node->left->IsRed()) node = RotateLeft(node);
-        if (node->left->IsRed() && node->left->left->IsRed()) node = RotateRight(node);
+        if (node->left->IsRed() && node->left && node->left->left->IsRed()) node = RotateRight(node);
         if (node->left->IsRed() && node->right->IsRed()) node = FlipColor(node);
         node->size = GetSize(node->left) + GetSize(node->right) + 1;
         return node;
@@ -183,9 +176,9 @@ private:
     }
 
     Node MoveRedLeft(Node node) {
-        assert(node->IsRed() && !node->left->IsRed() && !node->left->left->IsRed());
+        assert(node->IsRed() && !node->left->IsRed() && node->left && !node->left->left->IsRed());
         node = FlipColor(node);
-        if (node->right->left->IsRed()) {
+        if (node->right && node->right->left->IsRed()) {
             node->right = RotateRight(node->right);
             node = RotateLeft(node->left);
             node = FlipColor(node);
@@ -194,9 +187,9 @@ private:
     }
 
     Node MoveRedRight(Node node) {
-        assert(node->IsRed() && !node->right->IsRed() && !node->right->left->IsRed());
+        assert(node->IsRed() && !node->right->IsRed() && node->right && !node->right->left->IsRed());
         node = FlipColor(node);
-        if (node->left->left->IsRed()) {
+        if (node->left && node->left->left->IsRed()) {
             node = RotateRight(node);
             node = FlipColor(node);
         }
@@ -208,7 +201,7 @@ private:
         assert(node != nullptr);
         assert(node->IsRed() || node->left->IsRed());
         if (node->left == nullptr) return nullptr;
-        if (!node->left->IsRed() && !node->left->left->IsRed()) node = MoveRedLeft(node);
+        if (!node->left->IsRed() && node->left && !node->left->left->IsRed()) node = MoveRedLeft(node);
         node->left = DeleteMin(node->left);
         node = BalanceNode(node);
         return node;
@@ -218,14 +211,14 @@ private:
         if (node == nullptr) throw runtime_error("Delete value by a unset key");
 
         if (key < node->k) {
-            if (!node->left->IsRed() && !node->left->left->IsRed()) node = MoveRedLeft(node);
+            if (!node->left->IsRed() && node->left && !node->left->left->IsRed()) node = MoveRedLeft(node);
             node->left = Delete(node->left, key);
         } else {
             if (node->left->IsRed()) node = RotateRight(node);
 
             if (key == node->k && node->right == nullptr) return nullptr;
 
-            if (!node->right->IsRed() && !node->right->left->IsRed()) node = MoveRedRight(node);
+            if (!node->right->IsRed() && node->right && !node->right->left->IsRed()) node = MoveRedRight(node);
 
             if (key == node->k) {
                 Node min_node = Min(node->right);
@@ -258,6 +251,17 @@ public:
         if (!root->left->IsRed() && !root->right->IsRed()) root->color = RED;
         root = Delete(root, key);
         if (root != nullptr) root->color = BLACK;
+    }
+
+    // this method is only for test purpose
+    bool CheckTree() {
+        if (root == nullptr) return true;
+        if (root->IsRed()) return false;
+        int black_link = 0;
+        int left_black_link = CheckTree(root->left, root->color, black_link);
+        int right_black_link = CheckTree(root->right, root->color, black_link);
+        bool result = left_black_link == right_black_link && left_black_link >= 0;
+        return result;
     }
 };
 
