@@ -109,10 +109,9 @@ private:
         return left_black_link;
     }
 
-
     Node FlipColor(Node node) {
-        node->left->color = !node->left->color;
-        node->right->color = !node->right->color;
+        if (node->left) node->left->color = !node->left->color;
+        if (node->right) node->right->color = !node->right->color;
         node->color = !node->color;
 
         return node;
@@ -170,7 +169,7 @@ private:
     }
 
     Node Min(Node node) {
-        assert(node != nullptr);
+        if (node == nullptr) throw runtime_error("Get Min from an empty tree");
         if (node->left != nullptr) return Min(node->left);
         return node;
     }
@@ -180,7 +179,7 @@ private:
         node = FlipColor(node);
         if (node->right && node->right->left->IsRed()) {
             node->right = RotateRight(node->right);
-            node = RotateLeft(node->left);
+            node = RotateLeft(node);
             node = FlipColor(node);
         }
         return node;
@@ -234,6 +233,20 @@ private:
         return node;
     }
 
+    void Keys(Node node, vector<K> &receiver) {
+        if (node == nullptr) return;
+        Keys(node->left, receiver);
+        receiver.push_back(node->k);
+        Keys(node->right, receiver);
+    }
+
+    bool Contains(Node node, const K &k) {
+        if (node == nullptr) return false;
+        if (k < node->k) return Contains(node->left, k);
+        else if (k > node->k) return Contains(node->right, k);
+        return true;
+    }
+
 public:
     RBT() : root(nullptr) {}
 
@@ -252,6 +265,12 @@ public:
         root = Delete(root, key);
         if (root != nullptr) root->color = BLACK;
     }
+
+    K Min() { return Min(root)->k; }
+
+    void Keys(vector<K> &receiver) { return Keys(root, receiver); }
+
+    bool Contains(const K &k) { return Contains(root, k); }
 
     // this method is only for test purpose
     bool CheckTree() {

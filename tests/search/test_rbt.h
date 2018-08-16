@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 #include "search/rbt.h"
+#include "common/word_reader.h"
 
 using namespace std;
 
@@ -213,6 +214,37 @@ TEST(RBT_TEST, TEST_DELETE) {
     EXPECT_TRUE(rbt.CheckTree());
 
     EXPECT_THROW(rbt.Delete(1), runtime_error);
+}
+
+TEST(RBT_TEST, CASE_TEST) {
+    vector<string> words = ReadWords("data/tale.txt");
+    RBT<string, int> rbt;
+    for (auto &word:words) {
+        if (rbt.Contains(word)) {
+            rbt.Put(word, rbt.Get(word) + 1);
+        } else {
+            rbt.Put(word, 1);
+        }
+    }
+
+    EXPECT_NE(rbt.GetSize(), 0);
+    EXPECT_TRUE(rbt.CheckTree());
+
+    vector<string> counter;
+    rbt.Keys(counter);
+    string maxCounter = " ";
+    rbt.Put(maxCounter, 0);
+    for (auto &word:counter) {
+        if (rbt.Get(word) > rbt.Get(maxCounter)) {
+            maxCounter = word;
+        }
+    }
+    while (rbt.GetSize()) {
+        string minKey = rbt.Min();
+        rbt.Delete(minKey);
+    }
+    EXPECT_EQ(rbt.GetSize(), 0);
+    EXPECT_TRUE(rbt.CheckTree());
 }
 
 #endif //ALGS4_TEST_RBT_H

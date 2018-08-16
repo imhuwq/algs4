@@ -4,11 +4,11 @@
 #include <gtest/gtest.h>
 
 #include "search/bst.h"
-#include "common/file_word_reader.h"
+#include "common/word_reader.h"
 
 using namespace std;
 
-TEST(BST_TEST, FULL_TEST) {
+TEST(BST_TEST, CASE_TEST) {
     vector<string> words = ReadWords("data/tale.txt");
     BST<string, int> bst;
     for (auto &word:words) {
