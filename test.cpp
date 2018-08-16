@@ -1,1 +1,6 @@
-#include "tests/search/test_rbt.h"
+#include "sort/test_selection_sort.h"
+#include "sort/test_insertion_sort.h"
+#include "sort/test_shell_sort.h"
+#include "sort/test_merge_sort.h"
+#include "sort/test_quick_sort.h"
+#include "sort/test_heap_sort.h"
