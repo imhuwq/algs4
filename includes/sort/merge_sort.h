@@ -3,6 +3,7 @@
 
 #include <iterator>
 #include <algorithm>
+#include <sstream>
 
 #include "sort_base.h"
 #include "insertion_sort.h"
@@ -69,7 +70,7 @@ private:
 
         // 再合并两个子集合
         if (aux[mid] < aux[mid + 1]) {
-            copy(begin(elements) + lo, begin(elements) + hi, begin(aux) + lo);
+            copy(begin(aux) + lo, begin(aux) + hi + 1, begin(elements) + lo);
         } else {
             Merge(elements, aux, lo, mid, hi);
         }

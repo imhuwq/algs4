@@ -1,4 +1,6 @@
 .vs
 .idea
 data
+venv
+play.py
 cmake-build-debug
